@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+ 
+<head>
+    <link rel="stylesheet" href="style2.css">
+    <link rel="stylesheet" href=
+"https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href=
+"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href=
+"https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap">
+    <title>Bharanigetweather.App</title>
+    <link rel="stylesheet" href="style.css">
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  
+</head>
+ 
+<body>
+    <style>
+        body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+   background-image: url(rain-on-city-background-rainy-day-urban-landscape-in-rainy-weather-illustration-in-flat-style-vector.jpg);
+   background-repeat: repeat;
+   background-size: cover;
+}
+ 
+.container {
+    text-align: center;
+}
+ 
+.weather-card {
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    width: 850px;
+    height: 1500px;
+    min-width: 300px;
+    font-size: 30px;
+    max-width: 600px;
+    max-height: 700px;
+    min-height:300px ;
+
+}
+
+.weather-card:hover {
+    transform: scale(1.05);
+}
+ 
+#city-input {
+    padding: 15px;
+    margin: 10px 0;
+    width: 70%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+ 
+#city-input:focus {
+    outline: none;
+    border-color: #2196F3;
+}
+ 
+#city-input::placeholder {
+    color: #aaa;
+}
+ 
+#city-input-btn {
+    padding: 10px;
+    background-color: #2196F3;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+ 
+#city-input-btn:hover {
+    background-color: #1565C0;
+}
+ 
+#weather-info {
+    display: none;
+}
+ 
+#weather-icon {
+    width: 100px;
+    height: 100px;
+}
+ 
+#temperature {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 8px 0;
+}
+ 
+#description {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+ 
+#wind-speed {
+    font-size: 16px;
+    color: rgb(0, 255, 21);
+    font-weight: bold;
+}
+ 
+#date {
+    font-size: 14px;
+    color: rgb(255, 0, 0);
+    font-weight: bold;
+}
+img{
+    width:120px !important;
+}
+.why{
+    width: 600px;
+}
+.hi{
+    position: absolute;
+    left: 10px;
+   top: 30px;
+   width: 200px;
+}
+h1{
+    font-size: 40px;
+}
+    </style>
+    <div class="container" >
+        <div  data-aos="flip-left"
+        data-aos-duration="3000"  class="weather-card">
+            <h1 data-aos="fade-up" data-aos-delay=900 data-aos-easing="ease-in-back"data-aos-duration="900" style="color: rgb(0, 195, 255);font-weight: bolder;font-family: Verdana, Geneva, Tahoma, sans-serif;position: relative; left: 50px;">
+                Bharanidharan
+            </h1>
+            <img class="hi" src="1695460414623.png" alt="" srcset="">
+            <h3 data-aos="flip-left"
+            data-aos-easing="ease-out-cubic"
+            data-aos-duration="400" data-aos-delay=500 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-size: x-large;">
+                Weather App
+            </h3>
+            <input type="text" id="city-input"
+                   placeholder="Enter city name">
+            <button data-aos="zoom-in" class="animate__animated animate__rubberBand animate__infinite	infinite" id="city-input-btn"
+                    onclick="weatherFn($('#city-input').val())">
+                    Get Weather
+            </button>
+            <div id="weather-info"
+                 class="animate__animated animate__fadeIn">
+                <h3 id="city-name"></h3>
+                <p id="date"></p>
+               <img class="why" src="png-transparent-weather-ios-hd-logo-thumbnail.png" alt="" srcset="">
+                <p id="temperature"></p>
+                <p id="description"></p>
+                <p id="wind-speed"></p>
+            </div>
+        </div>
+    </div>
+    <script src=
+"https://code.jquery.com/jquery-3.6.0.min.js">
+    </script>
+    <script src=
+"https://momentjs.com/downloads/moment.min.js">
+    </script>
+    <script>const url =
+        'https://api.openweathermap.org/data/2.5/weather';
+    const apiKey =
+        'f00c38e0279b7bc85480c3fe775d518c';
+     
+    $(document).ready(function () {
+        weatherFn('Pune');
+    });
+     
+    async function weatherFn(cName) {
+        const temp =
+            `${url}?q=${cName}&appid=${apiKey}&units=metric`;
+        try {
+            const res = await fetch(temp);
+            const data = await res.json();
+            if (res.ok) {
+                weatherShowFn(data);
+            } else {
+                alert('City not found. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error fetching weather data:', error);
+        }
+    }
+     
+    function weatherShowFn(data) {
+        $('#city-name').text(data.name);
+        $('#date').text(moment().
+            format('MMMM Do YYYY, h:mm:ss a'));
+        $('#temperature').
+            html(`${data.main.temp}°C`);
+        $('#description').
+            text(data.weather[0].description);
+        $('#wind-speed').
+            html(`Wind Speed: ${data.wind.speed} m/s`);
+        $('#weather-icon').
+            attr('src',
+                `...`);
+        $('#weather-info').fadeIn();
+    }
+    </script>
+    <script src="script2.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
+</body>
+ 
+</html>
